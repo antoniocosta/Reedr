@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Window background before Compose draws (no white flash in dark mode) -->
+    <style name="AppTheme" parent="@android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">#FFFFFFFF</item>
+    </style>
+    <!-- Save to Reedr: no window at all, just a toast -->
+    <style name="SaveTheme" parent="@android:style/Theme.Translucent.NoTitleBar">
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowNoDisplay">true</item>
+    </style>
+</resources>

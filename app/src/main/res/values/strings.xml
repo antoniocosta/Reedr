@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Reedr</string>
+    <string name="save_to_reedr">Save to Reedr</string>
+    <string name="saving_channel">Saving articles</string>
+    <string name="saving_article">Saving article…</string>
+</resources>
