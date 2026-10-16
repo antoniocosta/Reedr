@@ -10,7 +10,7 @@ If you like this or find it useful, support the project by buying me a coffee.
 
 <a href="https://www.buymeacoffee.com/antoniocosta" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 140px !important;" ></a>
 
-<img src="docs/screenshot-1.png" width="270" alt="The reading list"> <img src="docs/screenshot-2.png" width="270" alt="An article in the reader">
+<img src="docs/screenshot-1.png" width="270" alt="The reading list"> <img src="docs/screenshot-2.png" width="270" alt="An article in the reader"> <img src="docs/screenshot-3.png" width="270" alt="An article in dark mode">
 
 Reedr has two sibling apps with the same look: [IPeekr](https://github.com/antoniocosta/IPeekr), a home-screen widget that shows your connection, and [BLinkr](https://github.com/antoniocosta/BLinkr), a link router for social media.
 
