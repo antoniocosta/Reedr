@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark mode launcher icon: the collection's dark palette (white + #8AB4F8 on #202124) -->
+    <color name="reedr_blue">#FF8AB4F8</color>
+    <color name="reedr_black">#FFFFFFFF</color>
+    <color name="ic_launcher_background">#FF202124</color>
+</resources>
