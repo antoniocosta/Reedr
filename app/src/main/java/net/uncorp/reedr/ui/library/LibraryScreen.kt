@@ -3,7 +3,20 @@ package net.uncorp.reedr.ui.library
 import android.content.ClipboardManager
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
+import androidx.core.graphics.drawable.toBitmap
 import net.uncorp.reedr.Ink
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontWeight
@@ -119,7 +132,17 @@ fun LibraryScreen(
         drawerContent = {
             ModalDrawerSheet(Modifier.width(240.dp)) {
                 Column(Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 12.dp)) {
-                    Text("Reedr", style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(16.dp))
+                    // logo and name: one tap target back to the first page
+                    Row(
+                        Modifier.padding(vertical = 8.dp).clip(RoundedCornerShape(28.dp)).clickable {
+                            onFilter(ArticleFilter.ReadingList); onPage(LibraryPage.List); searching = false; query = ""; scope.launch { drawer.close() }
+                        }.padding(horizontal = 16.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        AppLogo()
+                        Text("Reedr", style = MaterialTheme.typography.headlineSmall)
+                    }
                     fun pick(f: ArticleFilter) { onFilter(f); onPage(LibraryPage.List); searching = false; scope.launch { drawer.close() } }
                     fun pick(p: LibraryPage) { onPage(p); searching = false; query = ""; scope.launch { drawer.close() } }
                     ArticleFilter.entries.filter { it != ArticleFilter.History || prefs.keepHistory }.forEach { f ->
@@ -253,5 +276,15 @@ private fun ReadingListEmpty(modifier: Modifier = Modifier) {
         Step("3", "and you read it here, offline, without ads or clutter.")
         Text("Alternatively...", color = Ink, fontSize = 14.sp, modifier = Modifier.padding(top = 4.dp))
         Step("•", "Just tap + button and paste one.")
+    }
+}
+
+/** Reedr's launcher icon on a white circle, so its black and blue stay visible in dark mode. Same as Lurkr's menu logo. */
+@Composable
+private fun AppLogo() {
+    val context = LocalContext.current
+    val bitmap = remember { context.packageManager.getApplicationIcon(context.packageName).toBitmap().asImageBitmap() }
+    Box(Modifier.size(32.dp).background(Color.White, CircleShape), contentAlignment = Alignment.Center) {
+        Image(bitmap, contentDescription = null, modifier = Modifier.size(32.dp * 0.8f), contentScale = ContentScale.Fit)
     }
 }
