@@ -6,6 +6,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -14,6 +15,10 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.Archive
+import androidx.compose.material.icons.outlined.BookmarkBorder
+import androidx.compose.material.icons.outlined.History
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -98,15 +103,20 @@ fun LibraryScreen(
     ModalNavigationDrawer(
         drawerState = drawer,
         drawerContent = {
-            ModalDrawerSheet {
+            ModalDrawerSheet(Modifier.width(240.dp)) {
                 Column(Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 12.dp)) {
                     Text("Reedr", style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(16.dp))
                     fun pick(f: ArticleFilter) { onFilter(f); searching = false; scope.launch { drawer.close() } }
                     ArticleFilter.entries.filter { it != ArticleFilter.History || prefs.keepHistory }.forEach { f ->
-                        NavigationDrawerItem(label = { Text(f.title) }, selected = filter == f, onClick = { pick(f) })
+                        val icon = when (f) {
+                            ArticleFilter.ReadingList -> Icons.Outlined.BookmarkBorder
+                            ArticleFilter.Archive -> Icons.Outlined.Archive
+                            ArticleFilter.History -> Icons.Outlined.History
+                        }
+                        NavigationDrawerItem(icon = { Icon(icon, null) }, label = { Text(f.title) }, selected = filter == f, onClick = { pick(f) })
                     }
                     HorizontalDivider(Modifier.padding(vertical = 8.dp), color = Line)
-                    NavigationDrawerItem(label = { Text("Settings") }, selected = false, onClick = { scope.launch { drawer.close() }; onSettings() })
+                    NavigationDrawerItem(icon = { Icon(Icons.Outlined.Settings, null) }, label = { Text("Settings") }, selected = false, onClick = { scope.launch { drawer.close() }; onSettings() })
                 }
             }
         },
