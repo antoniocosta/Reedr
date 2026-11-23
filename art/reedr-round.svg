@@ -1,0 +1,8 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Generated from art/reedr.svg by scripts/gen-icon.py. Do not edit by hand. -->
+  <circle cx="256" cy="256" r="256" fill="white"/>
+  <g transform="translate(51.2 51.2) scale(0.8)">
+    <path fill="black" d="M64,416h64v32h-64zM256,416h64v32h-64zM96,384h64v32h-64zM288,384h64v32h-64zM128,64h96v32h-96zM96,96h32v32h-32zM128,416h64v32h-64zM320,416h64v32h-64zM192,96h32v32h-32zM128,352h32v64h-32zM320,352h32v64h-32zM128,288h32v96h-32zM128,288h224v32h-224zM320,288h32v96h-32zM160,224h32v64h-32zM288,224h32v64h-32zM192,128h32v96h-32zM256,160h32v64h-32zM224,96h32v64h-32zM128,160h64v32h-64zM96,192h32v32h-32z"/>
+    <path fill="#0000EE" d="M352,320h32v96h-32zM384,384h32v32h-32zM320,224h32v64h-32zM288,160h32v64h-32zM256,96h32v64h-32zM224,64h32v32h-32zM384,416h64v32h-64z"/>
+  </g>
+</svg>

@@ -1,16 +1,20 @@
-<img src="art/reedr.svg" width="96" alt="Reedr icon">
+<p align="center"><img src="art/reedr-round.svg" alt="" width="96"></p>
 
-# Reedr
+<h1 align="center">Reedr</h1>
 
-A tiny Android read-it-later app. Share an article to Reedr from any app (a browser, a news app, Reddit & co.) and it opens straight away as a clean, readable page: just the text and its pictures, saved on your phone to read now or later, offline. Keep it in your reading list, archive it when you're done, highlight what matters and search everything you saved, article text included.
+<h3 align="center">Read it later, without the clutter.</h3>
 
-It's a much simpler take on [Article Reader – Offline](https://play.google.com/store/apps/details?id=com.olegsheremet.articlereader): written from scratch, with Firefox's Reader View engine for cleaner pages. No accounts, no ads, no analytics, no servers: pages come straight from the site and stay on the phone.
+<p align="center">Share an article from any app and read it as a clean page, saved on your phone and offline.</p>
+
+<p align="center"><img src="docs/phones.png" alt="Reedr showing the reading list, a Wikipedia article on lighthouses in dark mode and a Wikipedia article on typography" width="900"></p>
+
+A tiny Android read-it-later app. Share an article to Reedr from any app (a browser, a news app, Reddit & co.) and it opens straight away as a clean, readable page: Just the text and its pictures, saved on your phone to read now or later, offline. Keep it in your reading list, archive it when you're done, highlight what matters and search everything you saved, article text included.
+
+It's a much simpler take on [Article Reader – Offline](https://play.google.com/store/apps/details?id=com.olegsheremet.articlereader): Written from scratch, with Firefox's Reader View engine for cleaner pages. No accounts, no ads, no analytics, no servers: Pages come straight from the site and stay on the phone.
 
 If you like this or find it useful, support the project by buying me a coffee.
 
-<a href="https://www.buymeacoffee.com/antoniocosta" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 140px !important;" ></a>
-
-<img src="docs/screenshot-1.png" width="270" alt="The reading list"> <img src="docs/screenshot-2.png" width="270" alt="An article in the reader"> <img src="docs/screenshot-3.png" width="270" alt="An article in dark mode">
+<a href="https://www.buymeacoffee.com/antoniocosta"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="40"></a>
 
 Reedr has two sibling apps with the same look: [IPeekr](https://github.com/antoniocosta/IPeekr), a home-screen widget that shows your connection, and [BLinkr](https://github.com/antoniocosta/BLinkr), a link router for social media.
 
@@ -57,7 +61,7 @@ scripts/dev.sh share https://…         # share a link to Reedr as another app 
 
 ## Icon
 
-The icon source is `art/reedr.svg` (512px pixel art). `scripts/gen-icon.py` regenerates the launcher drawables from it.
+The icon source is `art/reedr.svg` (512px pixel art). `scripts/gen-icon.py` regenerates the launcher drawables and the README's logo (`art/reedr-round.svg`, the icon on a white circle) from it. `scripts/phones.py` frames three full-screen emulator captures into `docs/phones.png`.
 
 ## Credits
 
