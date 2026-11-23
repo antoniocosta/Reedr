@@ -35,7 +35,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Archive
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.History
-import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -85,7 +84,7 @@ import net.uncorp.reedr.ui.TextInputDialog
 import net.uncorp.reedr.ui.rememberArticleActions
 
 /** The drawer's pages: one of the article lists, or one of the pages below them. */
-enum class LibraryPage { List, HowItWorks, Settings }
+enum class LibraryPage { List, Settings }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -118,7 +117,7 @@ fun LibraryScreen(
     val articles by articlesFlow.collectAsStateWithLifecycle(null)
     val (actions, dialogs) = rememberArticleActions(onOpen)
 
-    // Back from How it works or Settings returns to the Reading list
+    // Back from Settings returns to the Reading list
     BackHandler(enabled = searching || drawer.isOpen || page != LibraryPage.List) {
         when {
             drawer.isOpen -> scope.launch { drawer.close() }
@@ -153,7 +152,6 @@ fun LibraryScreen(
                         }
                         NavigationDrawerItem(icon = { Icon(icon, null) }, label = { Text(f.title) }, selected = page == LibraryPage.List && filter == f, onClick = { pick(f) })
                     }
-                    NavigationDrawerItem(icon = { Icon(Icons.Outlined.Info, null) }, label = { Text("How it works") }, selected = page == LibraryPage.HowItWorks, onClick = { pick(LibraryPage.HowItWorks) })
                     HorizontalDivider(Modifier.padding(vertical = 8.dp), color = Line)
                     NavigationDrawerItem(icon = { Icon(Icons.Outlined.Settings, null) }, label = { Text("Settings") }, selected = page == LibraryPage.Settings, onClick = { pick(LibraryPage.Settings) })
                 }
@@ -165,12 +163,10 @@ fun LibraryScreen(
                 topBar = {
                     TopAppBar(
                         navigationIcon = { IconButton(onClick = { scope.launch { drawer.open() } }) { Icon(Icons.Default.Menu, "Menu") } },
-                        title = { Text(if (page == LibraryPage.HowItWorks) "How it works" else "Settings") },
+                        title = { Text("Settings") },
                     )
                 },
-            ) { padding ->
-                if (page == LibraryPage.HowItWorks) HowItWorks(Modifier.padding(padding)) else SettingsPage(Modifier.padding(padding))
-            }
+            ) { padding -> SettingsPage(Modifier.padding(padding)) }
             return@ModalNavigationDrawer
         }
         Scaffold(

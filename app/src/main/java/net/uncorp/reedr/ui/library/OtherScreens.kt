@@ -180,22 +180,6 @@ private fun Section(title: String) {
     Text(title, color = Ink, fontWeight = FontWeight.Bold, fontSize = 15.sp, modifier = Modifier.padding(top = 12.dp, bottom = 4.dp))
 }
 
-/** The "How it works" page's numbered steps, same layout as Lurkr's. */
-@Composable
-fun HowItWorks(modifier: Modifier = Modifier) {
-    val steps = listOf(
-        "Share a link from any app to Save to Reedr, or tap + to paste one: Reedr downloads the article.",
-        "Read it here, offline, without ads or clutter.",
-        "Archive it when you are done.",
-    )
-    Column(
-        modifier.verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        steps.forEachIndexed { i, text -> Step("${i + 1}", text) }
-    }
-}
-
 /** A numbered (or bulleted) step: blue bold number in a 14.dp column, then the text. */
 @Composable
 fun Step(number: String, text: String) = Step(number, AnnotatedString(text))
