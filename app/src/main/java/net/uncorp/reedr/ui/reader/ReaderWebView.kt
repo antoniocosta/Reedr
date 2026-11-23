@@ -180,7 +180,7 @@ class ReaderWebView(context: Context, files: ArticleFiles, private val callbacks
             net.uncorp.reedr.data.ReaderTheme.SYSTEM -> if (dark) DARK else LIGHT
         }
 
-        // the collection palette (IPeekr, BLinkr): ink on paper, electric blue accent; highlights are the accent at low opacity
+        // the collection palette (IPeekr, Lurkr): Ink on paper, electric blue accent. Highlights are the accent at low opacity
         private val LIGHT = Palette("#000000", "rgba(0,0,0,0.6)", "#ffffff", "#0000EE", "rgba(0,0,0,0.13)", "rgba(0,0,238,0.14)")
         private val DARK = Palette("#ffffff", "rgba(255,255,255,0.6)", "#202124", "#8AB4F8", "rgba(255,255,255,0.2)", "rgba(138,180,248,0.30)")
 

@@ -16,7 +16,7 @@ If you like this or find it useful, support the project by buying me a coffee.
 
 <a href="https://www.buymeacoffee.com/antoniocosta"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="40"></a>
 
-Reedr has two sibling apps with the same look: [IPeekr](https://github.com/antoniocosta/IPeekr), a home-screen widget that shows your connection, and [BLinkr](https://github.com/antoniocosta/BLinkr), a link router for social media.
+Reedr has two sibling apps with the same look: [Lurkr](https://github.com/antoniocosta/Lurkr), a logged-out, private viewer and link router for social media, and [IPeekr](https://github.com/antoniocosta/IPeekr), a home-screen widget that shows your connection.
 
 - **Stack:** Kotlin, Compose, Room, WorkManager, OkHttp, jsoup, Mozilla Readability.
 - **SDK levels:** minSdk 26, target 36.
