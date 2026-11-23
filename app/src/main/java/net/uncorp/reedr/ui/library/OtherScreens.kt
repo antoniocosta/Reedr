@@ -74,47 +74,31 @@ import net.uncorp.reedr.ui.OverflowMenu
 import net.uncorp.reedr.ui.Pill
 import net.uncorp.reedr.ui.TextInputDialog
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SubScreen(title: String, onBack: () -> Unit, content: @Composable (PaddingValues) -> Unit) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(title) },
-                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back") } },
-            )
-        },
-        content = content,
-    )
-}
-
-@Composable
-fun SettingsScreen(onBack: () -> Unit) {
+fun SettingsPage(modifier: Modifier = Modifier) {
     val graph = LocalContext.current.graph
     val settings = graph.settings
     val repo = graph.repository
     val scope = rememberCoroutineScope()
     val prefs by settings.reader.collectAsStateWithLifecycle()
     var licenses by remember { mutableStateOf(false) }
-    SubScreen("Settings", onBack) { padding ->
-        Column(Modifier.padding(padding).verticalScroll(rememberScrollState()).padding(horizontal = 20.dp)) {
-            Section("Reader")
-            ReaderStyleControls(prefs) { settings.update(it) }
-            Section("Saving")
-            SwitchRow("Download images", "Store pictures with each article so they show offline", prefs.downloadImages) { v -> settings.update { it.copy(downloadImages = v) } }
-            Section("Library")
-            SwitchRow("Archive at the end", "Move an article to the Archive when you scroll to its end", prefs.archiveAtEnd) { v -> settings.update { it.copy(archiveAtEnd = v) } }
-            SwitchRow("Keep history", "List the articles you open. Turning it off clears the list", prefs.keepHistory) { v ->
-                settings.update { it.copy(keepHistory = v) }
-                if (!v) scope.launch { repo.clearHistory() }
-            }
-            Section("About")
-            Text("No accounts, no ads, no analytics. Pages are downloaded straight from the site and stored only on this phone.", color = Muted, fontSize = 13.sp)
-            Text("Open-source licenses", color = Blue, fontSize = 15.sp, modifier = Modifier.fillMaxWidth().clickable { licenses = true }.padding(vertical = 12.dp))
-            HorizontalDivider(color = Line)
-            ThemePicker()
-            Footer()
+    Column(modifier.verticalScroll(rememberScrollState()).padding(horizontal = 20.dp)) {
+        Section("Reader")
+        ReaderStyleControls(prefs) { settings.update(it) }
+        Section("Saving")
+        SwitchRow("Download images", "Store pictures with each article so they show offline", prefs.downloadImages) { v -> settings.update { it.copy(downloadImages = v) } }
+        Section("Library")
+        SwitchRow("Archive at the end", "Move an article to the Archive when you scroll to its end", prefs.archiveAtEnd) { v -> settings.update { it.copy(archiveAtEnd = v) } }
+        SwitchRow("Keep history", "List the articles you open. Turning it off clears the list", prefs.keepHistory) { v ->
+            settings.update { it.copy(keepHistory = v) }
+            if (!v) scope.launch { repo.clearHistory() }
         }
+        Section("About")
+        Text("No accounts, no ads, no analytics. Pages are downloaded straight from the site and stored only on this phone.", color = Muted, fontSize = 13.sp)
+        Text("Open-source licenses", color = Blue, fontSize = 15.sp, modifier = Modifier.fillMaxWidth().clickable { licenses = true }.padding(vertical = 12.dp))
+        HorizontalDivider(color = Line)
+        ThemePicker()
+        Footer()
     }
 
     if (licenses) AlertDialog(

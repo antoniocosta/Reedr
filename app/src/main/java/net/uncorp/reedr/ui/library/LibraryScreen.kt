@@ -67,13 +67,17 @@ import net.uncorp.reedr.ui.OverflowMenu
 import net.uncorp.reedr.ui.TextInputDialog
 import net.uncorp.reedr.ui.rememberArticleActions
 
+/** The drawer's pages: one of the article lists, or one of the pages below them. */
+enum class LibraryPage { List, HowItWorks, Settings }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LibraryScreen(
     filter: ArticleFilter,
+    page: LibraryPage,
     onFilter: (ArticleFilter) -> Unit,
+    onPage: (LibraryPage) -> Unit,
     onOpen: (Article) -> Unit,
-    onSettings: () -> Unit,
 ) {
     val context = LocalContext.current
     val graph = context.graph
@@ -84,7 +88,6 @@ fun LibraryScreen(
     var query by rememberSaveable { mutableStateOf("") }
     var adding by rememberSaveable { mutableStateOf(false) }
     var confirm by remember { mutableStateOf(false) }
-    var howItWorks by rememberSaveable { mutableStateOf(false) }
 
     val prefs by graph.settings.reader.collectAsStateWithLifecycle()
     // History switched off in Settings while it was the open list
@@ -98,10 +101,11 @@ fun LibraryScreen(
     val articles by articlesFlow.collectAsStateWithLifecycle(null)
     val (actions, dialogs) = rememberArticleActions(onOpen)
 
-    BackHandler(enabled = searching || drawer.isOpen || howItWorks) {
+    // Back from How it works or Settings returns to the Reading list
+    BackHandler(enabled = searching || drawer.isOpen || page != LibraryPage.List) {
         when {
             drawer.isOpen -> scope.launch { drawer.close() }
-            howItWorks -> howItWorks = false
+            page != LibraryPage.List -> { onFilter(ArticleFilter.ReadingList); onPage(LibraryPage.List) }
             else -> { searching = false; query = "" }
         }
     }
@@ -112,34 +116,34 @@ fun LibraryScreen(
             ModalDrawerSheet(Modifier.width(240.dp)) {
                 Column(Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 12.dp)) {
                     Text("Reedr", style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(16.dp))
-                    fun pick(f: ArticleFilter) { onFilter(f); howItWorks = false; searching = false; scope.launch { drawer.close() } }
+                    fun pick(f: ArticleFilter) { onFilter(f); onPage(LibraryPage.List); searching = false; scope.launch { drawer.close() } }
+                    fun pick(p: LibraryPage) { onPage(p); searching = false; query = ""; scope.launch { drawer.close() } }
                     ArticleFilter.entries.filter { it != ArticleFilter.History || prefs.keepHistory }.forEach { f ->
                         val icon = when (f) {
                             ArticleFilter.ReadingList -> Icons.Outlined.BookmarkBorder
                             ArticleFilter.Archive -> Icons.Outlined.Archive
                             ArticleFilter.History -> Icons.Outlined.History
                         }
-                        NavigationDrawerItem(icon = { Icon(icon, null) }, label = { Text(f.title) }, selected = !howItWorks && filter == f, onClick = { pick(f) })
+                        NavigationDrawerItem(icon = { Icon(icon, null) }, label = { Text(f.title) }, selected = page == LibraryPage.List && filter == f, onClick = { pick(f) })
                     }
-                    NavigationDrawerItem(
-                        icon = { Icon(Icons.Outlined.Info, null) }, label = { Text("How it works") }, selected = howItWorks,
-                        onClick = { howItWorks = true; searching = false; query = ""; scope.launch { drawer.close() } },
-                    )
+                    NavigationDrawerItem(icon = { Icon(Icons.Outlined.Info, null) }, label = { Text("How it works") }, selected = page == LibraryPage.HowItWorks, onClick = { pick(LibraryPage.HowItWorks) })
                     HorizontalDivider(Modifier.padding(vertical = 8.dp), color = Line)
-                    NavigationDrawerItem(icon = { Icon(Icons.Outlined.Settings, null) }, label = { Text("Settings") }, selected = false, onClick = { scope.launch { drawer.close() }; onSettings() })
+                    NavigationDrawerItem(icon = { Icon(Icons.Outlined.Settings, null) }, label = { Text("Settings") }, selected = page == LibraryPage.Settings, onClick = { pick(LibraryPage.Settings) })
                 }
             }
         },
     ) {
-        if (howItWorks) {
+        if (page != LibraryPage.List) {
             Scaffold(
                 topBar = {
                     TopAppBar(
                         navigationIcon = { IconButton(onClick = { scope.launch { drawer.open() } }) { Icon(Icons.Default.Menu, "Menu") } },
-                        title = { Text("How it works") },
+                        title = { Text(if (page == LibraryPage.HowItWorks) "How it works" else "Settings") },
                     )
                 },
-            ) { padding -> HowItWorks(Modifier.padding(padding)) }
+            ) { padding ->
+                if (page == LibraryPage.HowItWorks) HowItWorks(Modifier.padding(padding)) else SettingsPage(Modifier.padding(padding))
+            }
             return@ModalNavigationDrawer
         }
         Scaffold(

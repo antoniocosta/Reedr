@@ -22,7 +22,7 @@ import net.uncorp.reedr.data.ArticleFilter
 import net.uncorp.reedr.data.SaveOutcome
 import net.uncorp.reedr.graph
 import net.uncorp.reedr.ui.library.LibraryScreen
-import net.uncorp.reedr.ui.library.SettingsScreen
+import net.uncorp.reedr.ui.library.LibraryPage
 import net.uncorp.reedr.ui.reader.ReaderScreen
 import net.uncorp.reedr.AppTheme
 
@@ -30,17 +30,15 @@ import net.uncorp.reedr.AppTheme
 sealed interface Screen {
     data object Library : Screen
     data class Reader(val id: Long) : Screen
-    data object Settings : Screen
 
     fun encode(): String = when (this) {
-        Library -> "library"; Settings -> "settings"
+        Library -> "library"
         is Reader -> "reader:$id"
     }
 
     companion object {
         fun decode(s: String): Screen = when {
             s.startsWith("reader:") -> Reader(s.split(":")[1].toLong())
-            s == "settings" -> Settings
             else -> Library
         }
     }
@@ -68,6 +66,7 @@ class MainActivity : ComponentActivity() {
             saver = listSaver(save = { list -> list.map { it.encode() } }, restore = { saved -> mutableStateListOf(*saved.map(Screen::decode).toTypedArray()) }),
         ) { mutableStateListOf(Screen.Library) }
         val filterState = rememberSaveable { mutableStateOf(ArticleFilter.ReadingList) }
+        val pageState = rememberSaveable { mutableStateOf(LibraryPage.List) }
 
         fun push(s: Screen) { stack.add(s) }
         fun pop() { if (stack.size > 1) stack.removeAt(stack.lastIndex) else finish() }
@@ -85,6 +84,7 @@ class MainActivity : ComponentActivity() {
                     SaveOutcome.NotALink -> { Toast.makeText(this@MainActivity, "No link to save", Toast.LENGTH_SHORT).show(); return@collect }
                 }
                 filterState.value = ArticleFilter.ReadingList
+                pageState.value = LibraryPage.List
                 stack.clear()
                 stack.addAll(listOf(Screen.Library, Screen.Reader(id)))
             }
@@ -93,12 +93,12 @@ class MainActivity : ComponentActivity() {
         when (val screen = stack.last()) {
             Screen.Library -> LibraryScreen(
                 filter = filterState.value,
+                page = pageState.value,
                 onFilter = { filterState.value = it },
+                onPage = { pageState.value = it },
                 onOpen = { push(Screen.Reader(it.id)) },
-                onSettings = { push(Screen.Settings) },
             )
             is Screen.Reader -> key(screen.id) { ReaderScreen(screen.id, onBack = ::pop) }
-            Screen.Settings -> SettingsScreen(onBack = ::pop)
         }
     }
 
