@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Archive
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.History
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -83,6 +84,7 @@ fun LibraryScreen(
     var query by rememberSaveable { mutableStateOf("") }
     var adding by rememberSaveable { mutableStateOf(false) }
     var confirm by remember { mutableStateOf(false) }
+    var howItWorks by rememberSaveable { mutableStateOf(false) }
 
     val prefs by graph.settings.reader.collectAsStateWithLifecycle()
     // History switched off in Settings while it was the open list
@@ -96,8 +98,12 @@ fun LibraryScreen(
     val articles by articlesFlow.collectAsStateWithLifecycle(null)
     val (actions, dialogs) = rememberArticleActions(onOpen)
 
-    BackHandler(enabled = searching || drawer.isOpen) {
-        if (drawer.isOpen) scope.launch { drawer.close() } else { searching = false; query = "" }
+    BackHandler(enabled = searching || drawer.isOpen || howItWorks) {
+        when {
+            drawer.isOpen -> scope.launch { drawer.close() }
+            howItWorks -> howItWorks = false
+            else -> { searching = false; query = "" }
+        }
     }
 
     ModalNavigationDrawer(
@@ -106,21 +112,36 @@ fun LibraryScreen(
             ModalDrawerSheet(Modifier.width(240.dp)) {
                 Column(Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 12.dp)) {
                     Text("Reedr", style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(16.dp))
-                    fun pick(f: ArticleFilter) { onFilter(f); searching = false; scope.launch { drawer.close() } }
+                    fun pick(f: ArticleFilter) { onFilter(f); howItWorks = false; searching = false; scope.launch { drawer.close() } }
                     ArticleFilter.entries.filter { it != ArticleFilter.History || prefs.keepHistory }.forEach { f ->
                         val icon = when (f) {
                             ArticleFilter.ReadingList -> Icons.Outlined.BookmarkBorder
                             ArticleFilter.Archive -> Icons.Outlined.Archive
                             ArticleFilter.History -> Icons.Outlined.History
                         }
-                        NavigationDrawerItem(icon = { Icon(icon, null) }, label = { Text(f.title) }, selected = filter == f, onClick = { pick(f) })
+                        NavigationDrawerItem(icon = { Icon(icon, null) }, label = { Text(f.title) }, selected = !howItWorks && filter == f, onClick = { pick(f) })
                     }
+                    NavigationDrawerItem(
+                        icon = { Icon(Icons.Outlined.Info, null) }, label = { Text("How it works") }, selected = howItWorks,
+                        onClick = { howItWorks = true; searching = false; query = ""; scope.launch { drawer.close() } },
+                    )
                     HorizontalDivider(Modifier.padding(vertical = 8.dp), color = Line)
                     NavigationDrawerItem(icon = { Icon(Icons.Outlined.Settings, null) }, label = { Text("Settings") }, selected = false, onClick = { scope.launch { drawer.close() }; onSettings() })
                 }
             }
         },
     ) {
+        if (howItWorks) {
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        navigationIcon = { IconButton(onClick = { scope.launch { drawer.open() } }) { Icon(Icons.Default.Menu, "Menu") } },
+                        title = { Text("How it works") },
+                    )
+                },
+            ) { padding -> HowItWorks(Modifier.padding(padding)) }
+            return@ModalNavigationDrawer
+        }
         Scaffold(
             topBar = {
                 if (searching) {
