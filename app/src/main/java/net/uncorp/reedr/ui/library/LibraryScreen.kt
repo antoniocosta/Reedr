@@ -206,13 +206,12 @@ fun LibraryScreen(
             },
         ) { padding ->
             articles?.let { list ->
-                if (list.isEmpty() && filter == ArticleFilter.ReadingList && !(searching && query.isNotBlank())) {
-                    ReadingListEmpty(Modifier.padding(padding))
+                if (list.isEmpty() && filter != ArticleFilter.History && !(searching && query.isNotBlank())) {
+                    if (filter == ArticleFilter.ReadingList) ReadingListEmpty(Modifier.padding(padding)) else ArchiveEmpty(Modifier.padding(padding))
                     return@let
                 }
                 val empty = when {
                     searching && query.isNotBlank() -> "Nothing in ${filter.title} matches “$query”"
-                    filter == ArticleFilter.Archive -> "Archive articles you're done with from their ⋮ menu."
                     else -> "Articles you open appear here."
                 }
                 ArticleList(list, actions, empty, Modifier.padding(padding))
@@ -261,17 +260,33 @@ fun LibraryScreen(
 
 /** The empty Reading list: what Reedr does, top-aligned and clear of the + button. */
 @Composable
-private fun ReadingListEmpty(modifier: Modifier = Modifier) {
+private fun ReadingListEmpty(modifier: Modifier = Modifier) = EmptySteps(
+    "Nothing to read yet",
+    listOf("Share a link from any app to Save to Reedr.", "Reedr downloads the article,", "and you read it here, offline, without ads or clutter."),
+    "Just tap + button and paste one.",
+    modifier,
+)
+
+/** The empty Archive: how articles get here. */
+@Composable
+private fun ArchiveEmpty(modifier: Modifier = Modifier) = EmptySteps(
+    "Nothing archived yet",
+    listOf("Open an article from the Reading list.", "When you are done, tap ⋮ and choose Archive.", "It moves here, out of the Reading list."),
+    "Turn on Archive at the end in Settings to archive an article when you scroll to its end.",
+    modifier,
+)
+
+/** Title, numbered steps, then "Alternatively..." and one bullet, top-aligned like Lurkr's empty Recents. */
+@Composable
+private fun EmptySteps(title: String, steps: List<String>, alternative: String, modifier: Modifier = Modifier) {
     Column(
         modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(start = 20.dp, end = 20.dp, top = 24.dp, bottom = 96.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Text("Nothing to read yet", color = Ink, fontWeight = FontWeight.Bold, fontSize = 17.sp)
-        Step("1", "Share a link from any app to Save to Reedr.")
-        Step("2", "Reedr downloads the article,")
-        Step("3", "and you read it here, offline, without ads or clutter.")
+        Text(title, color = Ink, fontWeight = FontWeight.Bold, fontSize = 17.sp)
+        steps.forEachIndexed { i, text -> Step("${i + 1}", text) }
         Text("Alternatively...", color = Ink, fontSize = 14.sp, modifier = Modifier.padding(top = 4.dp))
-        Step("•", "Just tap + button and paste one.")
+        Step("•", alternative)
     }
 }
 
