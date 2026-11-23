@@ -98,6 +98,12 @@ fun SettingsScreen(onBack: () -> Unit) {
     var licenses by remember { mutableStateOf(false) }
     SubScreen("Settings", onBack) { padding ->
         Column(Modifier.padding(padding).verticalScroll(rememberScrollState()).padding(horizontal = 20.dp)) {
+            Section("How it works")
+            Steps(
+                "Share a link from any app to Save to Reedr, or tap + to paste one: Reedr downloads the article.",
+                "Read it here, offline, without ads or clutter.",
+                "Archive it when you are done.",
+            )
             Section("Reader")
             ReaderStyleControls(prefs) { settings.update(it) }
             Section("Saving")
@@ -193,6 +199,18 @@ private fun Footer() {
 private fun Section(title: String) {
     HorizontalDivider(color = Line, modifier = Modifier.padding(top = 12.dp))
     Text(title, color = Ink, fontWeight = FontWeight.Bold, fontSize = 15.sp, modifier = Modifier.padding(top = 12.dp, bottom = 4.dp))
+}
+
+@Composable
+private fun Steps(vararg steps: String) {
+    Column(Modifier.padding(vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        steps.forEachIndexed { i, text ->
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                Text("${i + 1}", color = Blue, fontWeight = FontWeight.Bold, fontSize = 14.sp, modifier = Modifier.width(14.dp))
+                Text(text, color = Ink, fontSize = 14.sp)
+            }
+        }
+    }
 }
 
 @Composable
