@@ -60,7 +60,7 @@ def phone(path):
     return f"""<div style="padding:6px;border-radius:38px;background:#2a2c33;box-shadow:0 16px 50px rgb(0 0 0 / 40%)">
   <div style="width:{PHONE_W}px;border-radius:32px;overflow:hidden;background:{bg}">
     <div style="position:relative;height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 25px;color:{fg};font:{font}">
-      <span>9:41</span><span style="position:absolute;left:50%;top:9px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:#000"></span>
+      <span>12:34</span><span style="position:absolute;left:50%;top:9px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:#000"></span>
       <span style="display:flex;align-items:center;gap:1px"><span style="width:21px;height:10px;border:1px solid {fg};border-radius:3px;padding:1px;box-sizing:border-box;opacity:.9"><span style="display:block;width:80%;height:100%;border-radius:1.5px;background:{fg}"></span></span><span style="width:1.5px;height:4px;border-radius:0 1px 1px 0;background:{fg};opacity:.9"></span></span></div>
     <img src="data:image/png;base64,{shot}" style="display:block;width:{PHONE_W}px;height:{height}px">
     <div style="height:18px;display:flex;justify-content:center;align-items:center;background:{bottom_bg}"><span style="width:88px;height:4px;border-radius:2px;background:{bottom_fg};opacity:.55"></span></div>
