@@ -4,11 +4,11 @@
 
 <h3 align="center">Read it, even offline, without the clutter.</h3>
 
-<p align="center">Share an article from any app and read it as a clean page, saved on your phone. Works offline and without any account.</p>
+<p align="center">Share an article from any app and read it right away as a clean page. Works offline and without any account.</p>
 
 <p align="center"><img src="docs/phones.png" alt="Reedr showing the reading list, a Wikipedia article on lighthouses in dark mode and a Wikipedia article on typography" width="900"></p>
 
-A tiny Android read-it-later app. Share an article to Reedr from any app (a browser, a news app, Reddit & co.) and it opens straight away as a clean, readable page: Just the text and its pictures, saved on your phone to read now or later, offline. Keep it in your reading list, archive it when you're done, highlight what matters and search everything you saved, article text included.
+A tiny Android readability app that shows any article as a clean page, right away. Share it to Reedr from any app (a browser, a news app, Reddit & co.) and you get just the text and its pictures, also saved on your phone to read again later, offline. Keep it in your reading list, archive it when you're done, highlight what matters and search everything you saved, article text included.
 
 It's a much simpler take on [Article Reader – Offline](https://play.google.com/store/apps/details?id=com.olegsheremet.articlereader): Written from scratch, with Firefox's Reader View engine for cleaner pages. No accounts, no ads, no analytics, no servers: Pages come straight from the site and stay on the phone.
 
