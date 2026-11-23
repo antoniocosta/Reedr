@@ -2,7 +2,7 @@
 
 <h1 align="center">Reedr</h1>
 
-<h3 align="center">Read it later, without the clutter.</h3>
+<h3 align="center">Read it, even offline, without the clutter.</h3>
 
 <p align="center">Share an article from any app and read it as a clean page, saved on your phone and offline.</p>
 
