@@ -4,7 +4,7 @@
 
 <h3 align="center">Read it, even offline, without the clutter.</h3>
 
-<p align="center">Share an article from any app and read it as a clean page, saved on your phone and offline.</p>
+<p align="center">Share an article from any app and read it as a clean page, saved on your phone. Works offline and without any account.</p>
 
 <p align="center"><img src="docs/phones.png" alt="Reedr showing the reading list, a Wikipedia article on lighthouses in dark mode and a Wikipedia article on typography" width="900"></p>
 
