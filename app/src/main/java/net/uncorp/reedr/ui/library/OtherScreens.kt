@@ -48,6 +48,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -191,12 +192,19 @@ fun HowItWorks(modifier: Modifier = Modifier) {
         modifier.verticalScroll(rememberScrollState()).padding(horizontal = 20.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        steps.forEachIndexed { i, text ->
-            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                Text("${i + 1}", color = Blue, fontWeight = FontWeight.Bold, fontSize = 14.sp, modifier = Modifier.width(14.dp))
-                Text(text, color = Ink, fontSize = 14.sp)
-            }
-        }
+        steps.forEachIndexed { i, text -> Step("${i + 1}", text) }
+    }
+}
+
+/** A numbered (or bulleted) step: blue bold number in a 14.dp column, then the text. */
+@Composable
+fun Step(number: String, text: String) = Step(number, AnnotatedString(text))
+
+@Composable
+fun Step(number: String, text: AnnotatedString) {
+    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+        Text(number, color = Blue, fontWeight = FontWeight.Bold, fontSize = 14.sp, modifier = Modifier.width(14.dp))
+        Text(text, color = Ink, fontSize = 14.sp)
     }
 }
 

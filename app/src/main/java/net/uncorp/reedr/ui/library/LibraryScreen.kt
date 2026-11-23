@@ -4,6 +4,10 @@ import android.content.ClipboardManager
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
+import net.uncorp.reedr.Ink
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -183,9 +187,12 @@ fun LibraryScreen(
             },
         ) { padding ->
             articles?.let { list ->
+                if (list.isEmpty() && filter == ArticleFilter.ReadingList && !(searching && query.isNotBlank())) {
+                    ReadingListEmpty(Modifier.padding(padding))
+                    return@let
+                }
                 val empty = when {
                     searching && query.isNotBlank() -> "Nothing in ${filter.title} matches “$query”"
-                    filter == ArticleFilter.ReadingList -> "Nothing to read yet.\n\nShare a link from any app to “Save to Reedr”, or tap + to paste one."
                     filter == ArticleFilter.Archive -> "Archive articles you're done with from their ⋮ menu."
                     else -> "Articles you open appear here."
                 }
@@ -230,5 +237,21 @@ fun LibraryScreen(
                 message?.let { Toast.makeText(context, it, Toast.LENGTH_SHORT).show() }
             }
         }
+    }
+}
+
+/** The empty Reading list: what Reedr does, top-aligned and clear of the + button. */
+@Composable
+private fun ReadingListEmpty(modifier: Modifier = Modifier) {
+    Column(
+        modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(start = 20.dp, end = 20.dp, top = 24.dp, bottom = 96.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Text("Nothing to read yet", color = Ink, fontWeight = FontWeight.Bold, fontSize = 17.sp)
+        Step("1", "Share a link from any app to Save to Reedr.")
+        Step("2", "Reedr downloads the article,")
+        Step("3", "and you read it here, offline, without ads or clutter.")
+        Text("Alternatively...", color = Ink, fontSize = 14.sp, modifier = Modifier.padding(top = 4.dp))
+        Step("•", "Just tap + button and paste one.")
     }
 }
